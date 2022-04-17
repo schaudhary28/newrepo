@@ -247,16 +247,3 @@ resource "aws_security_group" "lb_sg" {
 
 
 
-module "asg" {
-  source              = "../../../modules/asg"
-  default_tags        = var.default_tags
-  env                 = var.env
-  desired_size        = var.desired_size
-  instance_type       = var.instance_type
-  public_key          = aws_key_pair.web_key.key_name
-  prefix              = var.prefix
-  security_groups     = [aws_security_group.webserver_sg.id]
-  vpc_id              = data.terraform_remote_state.network.outputs.vpc_id
-  lb_target_group_arn = module.alb.target_group_arns[0]
-  vpc_zone_identifier = data.terraform_remote_state.network.outputs.private_subnet_ids[*]
-}
